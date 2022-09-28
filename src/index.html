@@ -10,6 +10,22 @@
     <!-- Create a javscript array to store the information of products given in 
         the attachment and display them on a HTML page -->
     <h1>Product List</h1>
+    <!-- Add a dropdown and a textbox with search button to search and display the product according to the attachment. -->
+
+    <div style="display: flex">
+      <div name="prsearch" id="prcompany">
+        <!-- populate searchbox according to companies present -->
+      </div>
+      <div id="prsearchwithcompany" style="display: none">
+        <div style="display: inline" id="productsearch"></div>
+        <div style="display: inline">
+          <button onclick="filtercompany()">search</button>
+        </div>
+        <div style="display: inline"><button id="showall" onclick="showall()" style="display:none;">Show All</button></div>
+      </div>
+    </div>
+    <p id="search_productlist" style="text-align: center"></p>
+    <!-- product entry fields -->
     <div style="display: flex">
       <input type="text" id="company" placeholder="Company" />
       <input type="text" id="model" placeholder="Model" />
@@ -17,7 +33,8 @@
       <input type="number" id="price" placeholder="Price" />
       <button onclick="addproduct()">Add Product</button>
     </div>
-    <p id="productlist" style="text-align: center;"></p>
+    <!-- product table -->
+    <p id="productlist" style="text-align: center"></p>
   </body>
   <script src="./js/script.js"></script>
 </html>
