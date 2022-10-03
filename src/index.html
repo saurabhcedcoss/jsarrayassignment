@@ -5,36 +5,159 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inventory Management</title>
+    <style>
+      table tr{
+        border-bottom: 1px grey solid;
+      }
+    </style>
   </head>
   <body>
     <!-- Create a javscript array to store the information of products given in 
         the attachment and display them on a HTML page -->
     <h1>Product List</h1>
-    <!-- Add a dropdown and a textbox with search button to search and display the product according to the attachment. -->
-
+    <!-- menu item -->
     <div style="display: flex">
-      <div name="prsearch" id="prcompany">
-        <!-- populate searchbox according to companies present -->
-      </div>
-      <div id="prsearchwithcompany" style="display: none">
-        <div style="display: inline" id="productsearch"></div>
+      <div>
         <div style="display: inline">
-          <button onclick="filtercompany()">search</button>
+          <button onclick="showquan()">Update Quantity</button>
         </div>
-        <div style="display: inline"><button id="showall" onclick="showall()" style="display:none;">Show All</button></div>
+      </div>
+      <div style="display: none" id="updquanopt">
+        <div style="display: inline" id="prodforquan">
+          <!-- dropdown for product for quantity -->
+        </div>
+        <div style="display: inline">
+          <input type="number" id="quanadd" />
+        </div>
+        <div style="display: inline">
+          <button onclick="updquan()">Update</button>
+          <button style="color: red" onclick="closequanupd()">&#10008;</button>
+        </div>
+      </div>
+      <!--------- Insert in betweeen list Insert option in btw ------------->
+      <div>
+        <div style="display: inline">
+          <button onclick="showinsprod()">Update List</button>
+        </div>
+      </div>
+      <!-- get input box to add product -->
+      <div id="listbtwshow" style="display: none">
+        Select Place:
+        <select id="lengthoflist"></select>
+        <input type="text" id="company" placeholder="Company" />
+        <input type="text" id="model" placeholder="Model" />
+        <input type="number" id="memory" placeholder="Memory" />
+        <input type="number" id="price" placeholder="Price" />
+        <input type="number" id="quantity" placeholder="Quantity" />
+        <button onclick="addproductbtw()">&#10010; Add Product</button>
+        <button style="color: red" onclick="closelistbtw()">&#10008;</button>
+      </div>
+      <!-- Add a dropdown and a textbox with search button to search and display the product according to the attachment. -->
+      <!-- Insert option in btw -->
+      <div>
+        <div style="display: inline">
+          <button onclick="showcompanymodel()">Search Company and Model</button>
+        </div>
+      </div>
+      <div id="srchcompmodel" style="display: none">
+        <div name="prsearch" id="prcompany">
+          <!-- populate searchbox according to companies present -->
+        </div>
+        <div id="prsearchwithcompany">
+          <div style="display: inline" id="productsearch"></div>
+          <div style="display: inline">
+            <button onclick="filtercompany()">search</button>
+          </div>
+          <div style="display: inline">
+            <button id="showall" onclick="showall()" style="display: none">
+              Reset
+            </button>
+            <button style="color: red" onclick="closecompanymodel()">
+              &#10008;
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- filter by price -->
+      <div style="display: inline">
+        <button onclick="showfilter()">Price Filter</button>
+      </div>
+      <div id="filteroption" style="display: none">
+        <input type="number" id="minprice" placeholder="Minimum Price" />
+        <input type="number" id="maxprice" placeholder="Maximum Price" />
+        <button onclick="filterbyprice()">Search</button>
+        <button style="color: red" onclick="closefilter()">&#10008;</button>
+      </div>
+      <!---------------product rating-------->
+      <div style="display: inline">
+        <button onclick="showrateopt()">Rate Product</button>
+      </div>
+      <div id="rate_pr_drop" style="display: none">
+        <!-- dropdown for product -->
+        <div id="prod_drop_down"></div>
+        <select id="ratings">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <button onclick="rateprod()">Rate</button>
+        <button style="color: red" onclick="closerateopt()">&#10008;</button>
+      </div>
+      <!-----------------product sorting------------->
+      <div style="display: inline">
+        <button onclick="opensortopt()">Sort</button>
+      </div>
+      <div id="sortopt" style="display: none">
+        <select id="ascdsc">
+          <option>Ascending</option>
+          <option>Descending</option>
+        </select>
+        <select id="property">
+          <option>Company</option>
+          <option>Model</option>
+          <option>Memory</option>
+          <option>Price</option>
+        </select>
+        <button onclick="sortprod()">Sort Product</button>
+        <button style="color: red" onclick="closesortopt()">&#10008;</button>
+      </div>
+      <!-- Select product(s) from the list and their quantity and add them to a 
+        array then generate a billing invoice according to the attachment. -->
+      <div style="display: inline">
+        <button onclick="showgeneratebill()">Invoice</button>
+      </div>
+      <div style="display: none" id="generatebill">
+        <div id="invoice_prod">
+          <!-- dropdon for product -->
+        </div>
+        <div id="show_inv_quan" style="display: none;">
+          <input type="number" id="inv_quan" />
+          <button onclick="addtocart()">Add</button>
+          <button onclick="generatebill()">Generate Bill<span id="cart_area"></span></button>
+          <button style="color: red" onclick="closeshowgeneratebill()">&#10008;</button>
+        </div>
       </div>
     </div>
+    <p id="todel"></p>
     <p id="search_productlist" style="text-align: center"></p>
-    <!-- product entry fields -->
+    <!------ product entry fields -->
     <div style="display: flex">
       <input type="text" id="company" placeholder="Company" />
       <input type="text" id="model" placeholder="Model" />
       <input type="number" id="memory" placeholder="Memory" />
       <input type="number" id="price" placeholder="Price" />
-      <button onclick="addproduct()">Add Product</button>
+      <input type="number" id="quantity" placeholder="Quantity" />
+      <button onclick="addproduct()">&#10010; Add Product</button>
     </div>
-    <!-- product table -->
+    <!-------------------- product table ------------------------>
     <p id="productlist" style="text-align: center"></p>
+    <div id="cartlistsection"  style="display: none; margin-left: 25px;">
+      <h3>Your Cart</h3><button style="color: yellowgreen" onclick="closecart()">&#10008;</button>
+      <p id = "cartlist"></p>
+      <!-- show cart values -->
+    </div>
   </body>
   <script src="./js/script.js"></script>
 </html>
