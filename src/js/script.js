@@ -112,7 +112,7 @@ function filtercompany() {
     return element.company === srchcomp && element.model === srchmodel;
   });
   let product_search_table =
-    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   for (var i = 0; i < results.length; i++) {
     product_search_table += "<tr  style='border-bottom:1px grey solid;'>";
     product_search_table += "<td>" + results[i].company + "</td>";
@@ -171,7 +171,7 @@ function updquan() {
   addQuantity = parseInt(addQuantity);
   let getproduct = document.getElementById("selected_product").value;
   let product_quan_table =
-    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   products.forEach((element) => {
     if (element.model == getproduct) {
       let currentquantity = parseInt(element.quantity);
@@ -230,7 +230,7 @@ function addproductbtw() {
   document.getElementById("quantity").value = "";
   document.getElementById("lengthoflist").value = "0";
   let product_table =
-    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   for (var i = 0; i < products.length; i++) {
     product_table += "<tr  style='border-bottom:1px grey solid;'>";
     product_table += "<td>" + products[i].company + "</td>";
@@ -273,7 +273,7 @@ function filterbyprice() {
     minPrice +
     " and Rs: " +
     maxPrice +
-    "</h4><table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "</h4><table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   products.forEach((element) => {
     if (element.price >= minPrice && element.price <= maxPrice) {
       product_range_table += "<tr  style='border-bottom:1px grey solid;'>";
@@ -326,7 +326,7 @@ function rateprod() {
     }
   }
   let product_rate_table =
-    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   for (var i = 0; i < products.length; i++) {
     product_rate_table += "<tr  style='border-bottom:1px grey solid;'>";
     product_rate_table += "<td>" + products[i].company + "</td>";
@@ -439,7 +439,7 @@ function sortprod() {
   }
   console.log(products);
   let product_rate_table =
-    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   for (var i = 0; i < products.length; i++) {
     product_rate_table += "<tr  style='border-bottom:1px grey solid;'>";
     product_rate_table += "<td>" + products[i].company + "</td>";
@@ -519,7 +519,7 @@ function addtocart() {
     "</td></tr></table>";
   document.getElementById("cartlist").innerHTML = cart_table;
   let product_rate_table =
-    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   for (var i = 0; i < products.length; i++) {
     product_rate_table += "<tr  style='border-bottom:1px grey solid;'>";
     product_rate_table += "<td>" + products[i].company + "</td>";
@@ -556,7 +556,8 @@ function closecart() {
  to delete from the list and display the remaining products after deletion.*/
 todelete = [];
 function getval(obj) {
-  if (document.getElementById("itemadded").checked === true) {
+  var chk_id = obj.id;
+  if (document.getElementById(chk_id).checked === true) {
     var x = {
       delindex: obj.value,
       delcompany: products[obj.value].company,
@@ -572,13 +573,12 @@ function getval(obj) {
 function deleterow() {
   for (c = 0; c < todelete.length; c++) {
     delind = todelete[c].delindex;
-    console.log(delind);
-    products.splice(0, delind);
+    products.splice(delind, 0);
   }
 
   let checkvalue = 0;
   let product_table =
-    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=delete()>Delete Items</button></th></tr>";
+    "<table width='70%'><tr><th>Company</th><th>Model</th><th>Memory</th><th>Price</th><th>Quantity</th><th>Rating</th><th><button id='deletebtn' onclick=deleterow()>Delete Items</button></th></tr>";
   for (var i = 0; i < products.length; i++) {
     product_table += "<tr  style='border-bottom:1px grey solid;'>";
     product_table += "<td>" + products[i].company + "</td>";
@@ -588,8 +588,10 @@ function deleterow() {
     product_table += "<td>" + products[i].quantity + "</td>";
     product_table += "<td>" + products[i].rating + "</td>";
     product_table +=
-      "<td><input type='checkbox' id='itemadded' value='" +
-      checkvalue++ +
+      "<td><input type='checkbox' id='itemadded" +
+      i +
+      "' value='" +
+      i++ +
       "' onclick='getval(this)'></td>";
     product_table += "</tr>";
   }
